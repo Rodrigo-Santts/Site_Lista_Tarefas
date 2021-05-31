@@ -1,6 +1,10 @@
 .menu {
 	margin-bottom: 25px;
 }
+.list-group-item{
+   text-transform: none;
+   text-decoration: none;
+}
 
 .app {
 	margin-top: 25px;
