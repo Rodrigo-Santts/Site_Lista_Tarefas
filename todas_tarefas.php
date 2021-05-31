@@ -12,39 +12,7 @@ require 'tarefa_controller.php';
 		<link rel="stylesheet" href="css/estilo.css">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-      <script>
-         function editar(id_content, content){
-           let form = document.createElement('form');
-            form.action = '#';
-            form.method = 'post';
-            form.className = 'row';
-
-           let inputTarefa = document.createElement('input');
-            inputTarefa.type = 'text';
-            inputTarefa.name = 'tarefa';
-            inputTarefa.className = 'form-control col-7';
-            inputTarefa.value = content;
-
-            let input_id = document.createElement('input');
-            input_id.type = 'hidden';
-            input_id.name = 'id';
-            input_id.value = id_content;
-
-           let button = document.createElement('button');
-           button.type = 'submit';
-           button.className = 'btn btn-info col-3 ml-1'; 
-           button.innerHTML = 'Atualizar'; 
-
-           form.appendChild(inputTarefa);
-           form.appendChild(button);
-           form.appendChild(input_id);
-           
-           let div_tarefa = document.getElementById('tarefa_' + id_content);
-           div_tarefa.innerHTML = '';
-           div_tarefa.insertBefore(form, div_tarefa[0]);
-
-         }
-      </script>
+      <script src="script.js"></script>
 	</head>
 
 	<body>
@@ -61,35 +29,42 @@ require 'tarefa_controller.php';
 			<div class="row">
 				<div class="col-sm-3 menu">
 					<ul class="list-group">
-						<li class="list-group-item"><a href="index.php">Tarefas pendentes</a></li>
 						<li class="list-group-item"><a href="nova_tarefa.php">Nova tarefa</a></li>
-						<li class="list-group-item active"><a href="#">Todas tarefas</a></li>
+						<li class="list-group-item active"><a href="#">Todas pendentes</a></li>
+						<li class="list-group-item"><a href="index.php">Tarefas realizadas</a></li>
 					</ul>
 				</div>
 
-				<div class="col-sm-9">
+            <div class="col-sm-9">
 					<div class="container pagina">
 						<div class="row">
 							<div class="col">
-								<h4>Todas tarefas</h4>
+								<h4>Tarefas pendentes</h4>
 								<hr />
-                        <?php  for ($i=0; $i < count($tarefas); $i++){ 
-                           if(!empty($tarefas[$i]->tarefas)){
-                              continue;
-                           }     
-                        ?>
+
+                        <?php  for ($i=0; $i < count($tarefas); $i++){ ?>
                            <div class="row mb-3 d-flex align-items-center tarefa">
 
                               <div class="col-sm-9" id="tarefa_<?=$tarefas[$i]->id?>">
-                                 <?=$tarefas[$i]->tarefa?> (<?=$tarefas[$i]->status?>)
+                                 <?=$tarefas[$i]->tarefa?> 
+                                 <span class="text-danger text-uppercase"> (<?=$tarefas[$i]->status?>)</span>
                               </div>
 
                               <div class="col-sm-3 mt-2 d-flex justify-content-between">
-                                 <i class="fas fa-trash-alt fa-lg text-danger"></i>
-                                 <i class="fas fa-edit fa-lg text-info"
-                                    onclick="editar(<?= $tarefas[$i]->id?>, '<?=$tarefas[$i]->tarefa?>') ">
+
+                                 <i class="fas fa-trash-alt fa-lg text-danger" 
+                                    onclick="remover(<?=$tarefas[$i]->id?>)">
                                  </i>
-                                 <i class="fas fa-check-square fa-lg text-success"></i>
+                              
+                                 <i class="fas fa-edit fa-lg text-info"
+                                    onclick="editar(<?= $tarefas[$i]->id?>,
+                                       '<?=$tarefas[$i]->tarefa?>')">
+                                 </i>
+
+                                 <i class="fas fa-check-square fa-lg text-success" 
+                                    onclick="confirma_tarefa(<?=$tarefas[$i]->id?>)">
+                                 </i>
+                                 
                               </div>
                            </div>
                            <hr>
