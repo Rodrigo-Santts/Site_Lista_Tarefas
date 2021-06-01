@@ -1,7 +1,7 @@
 <?php
-require '../../private_archive/app_lista_tarefas/tarefa_model.php';
-require '../../private_archive/app_lista_tarefas/tarefa_service.php';
-require '../../private_archive/app_lista_tarefas/conexao.php';
+require 'tarefa_model.php';
+require 'tarefa_service.php';
+require 'conexao.php';
 $acao = isset($_GET['acao']) ? $_GET['acao'] : $acao ; 
 
 if ($acao == 'inserir'){
@@ -9,13 +9,12 @@ if ($acao == 'inserir'){
    $tarefa->__set('tarefa', $_POST['tarefa']);
    $conexao = new Conexao();
    $tarefaService =  new TarefaService($conexao, $tarefa);
-   $tarefaService->inserir();
 
    if(!$_POST['tarefa'] === '' || !empty($_POST['tarefa'])){
       header('location: nova_tarefa.php?envio=sucesso');
+      $tarefaService->inserir();
    }else{
       header('location: nova_tarefa.php?envio=error');
-      
    }
 
 }else if($acao == 'recuperar'){
